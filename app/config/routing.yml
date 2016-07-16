@@ -1,7 +1,4 @@
 event:
     resource: "@EventBundle/Resources/config/routing.yml"
-    prefix:   /yoda
+    prefix:   /
 
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
