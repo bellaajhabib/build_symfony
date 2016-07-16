@@ -1,0 +1,27 @@
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    role_hierarchy:
+        ROLE_ADMIN:       [ROLE_USER, ROLE_EVENT_CREATE, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    providers:
+        in_memory:
+            memory: ~
+
+    firewalls:
+        secured_area:
+            pattern:    ^/
+            form_login:
+                check_path: _security_check
+                login_path: /my-login-url
+            logout:
+                path:   _demo_logout
+                target: _demo
+            anonymous: ~
+
+
+    access_control:
+        - { path: ^/new, roles: ROLE_USER }
+        - { path: ^/create, roles: ROLE_USER }
+
