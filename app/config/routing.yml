@@ -1,10 +1,10 @@
-yoda_user:
+event:
     resource: "@YodaUserBundle/Controller/"
     type:     annotation
     prefix:   /
 
 
-event:
+user_routes:
     resource: "@EventBundle/Resources/config/routing.yml"
     prefix:   /
 

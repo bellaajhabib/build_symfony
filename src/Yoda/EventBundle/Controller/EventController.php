@@ -5,6 +5,7 @@ namespace Yoda\EventBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Yoda\EventBundle\Entity\Event;
 use Yoda\EventBundle\Form\EventType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,7 +18,7 @@ class EventController extends Controller
 {
     /**
      * @Template()
-     * @Route("/", name="event_index")
+     * @Route("/", name="event")
      * Lists all Event entities.
      *
      */
@@ -37,6 +38,7 @@ class EventController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->enforceUserSecurity();
         $event = new Event();
         $form = $this->createForm('Yoda\EventBundle\Form\EventType', $event);
         $form->handleRequest($request);
@@ -60,7 +62,7 @@ class EventController extends Controller
      *
      */
     public function showAction(Event $event)
-    {
+    {   $this->enforceUserSecurity();
         $deleteForm = $this->createDeleteForm($event);
 
         return $this->render('@Event/event/show.html.twig', array(
@@ -74,7 +76,7 @@ class EventController extends Controller
      *
      */
     public function editAction(Request $request, Event $event)
-    {
+    {   $this->enforceUserSecurity();
         $deleteForm = $this->createDeleteForm($event);
         $editForm = $this->createForm('Yoda\EventBundle\Form\EventType', $event);
         $editForm->handleRequest($request);
@@ -99,7 +101,7 @@ class EventController extends Controller
      *
      */
     public function deleteAction(Request $request, Event $event)
-    {
+    {   $this->enforceUserSecurity();
         $form = $this->createDeleteForm($event);
         $form->handleRequest($request);
 
@@ -120,11 +122,19 @@ class EventController extends Controller
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm(Event $event)
-    {
+    {   $this->enforceUserSecurity();
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('event_delete', array('id' => $event->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+    private function enforceUserSecurity()
+    {
+        $securityContext = $this->get('security.token_storage')->getToken()->getUser();
+     var_dump($securityContext->getUsername());
+        if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Need ROLE_ADMIN!');
+        }
     }
 }

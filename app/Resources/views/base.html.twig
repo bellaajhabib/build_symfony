@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet"
-      href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('bundles/event/css/event.css') }}">
-<link rel="stylesheet" href="{{ asset('bundles/event/css/events.css') }}">
-<link rel="stylesheet" href="{{ asset('bundles/event/css/main.css') }}">
+
 
     <head>
         <meta charset="UTF-8" />
@@ -13,6 +9,11 @@
             {%- else -%}
                 Events from a Galaxy, far far away
             {%- endif -%}</title>
+        <link rel="stylesheet"
+              href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/event/css/event.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/event/css/events.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/event/css/main.css') }}">
         {#{% block stylesheets %}#}
             {#{%stylesheets#}
             {#'bundles/event/css/event.css'#}
