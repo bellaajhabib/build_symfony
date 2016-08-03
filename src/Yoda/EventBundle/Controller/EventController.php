@@ -131,9 +131,10 @@ class EventController extends Controller
     }
     private function enforceUserSecurity()
     {
-        $securityContext = $this->get('security.token_storage')->getToken()->getUser();
-     var_dump($securityContext->getUsername());
-        if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $securityContext =$this->get('security.authorization_checker');
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+     var_dump($user->getEmail());
+        if (false === $securityContext->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedException('Need ROLE_ADMIN!');
         }
     }

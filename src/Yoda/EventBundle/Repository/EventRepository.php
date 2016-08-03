@@ -9,5 +9,5 @@ namespace Yoda\EventBundle\Repository;
  * repository methods below.
  */
 class EventRepository extends \Doctrine\ORM\EntityRepository
-{
+{ 
 }
