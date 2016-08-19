@@ -49,6 +49,15 @@ class Event
      * @ORM\Column(name="details", type="text")
      */
     private $details;
+    /**
+     * @ORM\ManyToOne(targetEntity="Yoda\UserBundle\Entity\User")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     */
+    private $owner;
+
+
+
+
 
    public function __construct(){
        $this->time=new \DateTime();
@@ -157,6 +166,22 @@ class Event
     public function getDetails()
     {
         return $this->details;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
     }
 }
 

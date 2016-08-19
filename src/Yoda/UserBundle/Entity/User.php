@@ -14,9 +14,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * User
  *
  * @ORM\Table(name="yoda_user")
+ *
  * @ORM\Entity(repositoryClass="Yoda\UserBundle\Repository\UserRepository")
+ * @UniqueEntity(fields="username", message="That username is taken!")
+ * @UniqueEntity(fields="email", message="That email is taken!")
  */
-class User implements  AdvancedUserInterface
+class User implements  AdvancedUserInterface,Serializable
 {
     /**
      * @var int
@@ -28,8 +31,8 @@ class User implements  AdvancedUserInterface
     private $id;
 
     /**
-     * @var string
-     *
+     * @ORM\Column(name="username",type="string",length=255)
+     * @Assert\NotBlank(message="Put ina username of course !")
      * @ORM\Column(name="username", type="string", length=255)
      */
     private $username;
@@ -40,6 +43,32 @@ class User implements  AdvancedUserInterface
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
+    /**
+     * Just stores the plain password temporarily !
+     * @Assert\NotBlank
+     * @Assert\Regex(pattern="/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/",
+     * message="Use 1 upper case letter, 1 lower case letter, and 1 number"
+     * )
+     * @var String
+     *
+     */
+    private  $plainpassword;
+
+    /**
+     * @return mixed
+     */
+    public function getPlainpassword()
+    {
+        return $this->plainpassword;
+    }
+
+    /**
+     * @param mixed $plainpassword
+     */
+    public function setPlainpassword($plainpassword)
+    {
+        $this->plainpassword = $plainpassword;
+    }
     /**
      * @ORM\Column(type="json_array")
      */
@@ -167,6 +196,7 @@ class User implements  AdvancedUserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+        $this->setPlainPassword(null);
     }
 
     /**
@@ -266,6 +296,41 @@ class User implements  AdvancedUserInterface
     {
         // TODO: Implement isEnabled() method.
         return $this->getIsActive();
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     */
+    public function serialize()
+    {
+        // TODO: Implement serialize() method.
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        ));
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+        // TODO: Implement unserialize() method.
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            ) = unserialize($serialized);
     }
 }
 

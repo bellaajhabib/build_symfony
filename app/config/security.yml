@@ -8,7 +8,7 @@ security:
 
     providers:
         our_database_users:
-            entity: { class: YodaUserBundle:User, property: username }
+            entity: { class: YodaUserBundle:User }
     firewalls:
         secured_area:
             pattern:    ^/

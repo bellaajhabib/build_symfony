@@ -25,7 +25,7 @@ class EventController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
+//        $userRepo =$em->getRepository('YodaUserBundle:User');
         $events = $em->getRepository('EventBundle:Event')->findAll();
 
         return  array(
@@ -44,6 +44,8 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $use=$this->getUser();
+            $event->setOwner($use);
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
             $em->flush();
