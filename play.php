@@ -14,17 +14,14 @@ $kernel->loadClassCache();
 $request = Request::createFromGlobals();
 $kernel->boot();
 $container=$kernel->getContainer();
-use Yoda\EventBundle\Entity\Event;
-$event=new Event();
-$event->setName('habib');
-$event->setLocation('Dethstar');
-$event->setTime(new \DateTime());
-$event->setDetails('Has Darth HATE surprise !');
+
+// all the setupis done
+use Yoda\UserBundle\Entity\User ;
 $em=$container->get('doctrine')->getManager();
-$em->persist($event);
-$em->flush();
-$container->set('request',$request);
-    // all the setup is done !!! Woo hoo
-$tempating=$container->get('templating');
-$show=$tempating->render('EventBundle:Default:index.html.twig');
-echo $show;
+$user=$em->getRepository('YodaUserBundle:User')->findOneBy(
+
+    array('username'=>'habib')
+);
+foreach ($user->getEvents() as $event){
+    var_dump($event->getName());
+}

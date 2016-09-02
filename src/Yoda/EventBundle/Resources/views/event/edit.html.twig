@@ -3,8 +3,8 @@
 {% block body %}
     <section class="event-show event-edit">
         <header id="menu">
-            <a class="link" href="{{ path('event_new') }}">&larr; back to the event list</a>
-            <a class="link" href="{{ path('event_show', {'id': entity.id}) }}">show event</a>
+            <a class="link" href="{{ path('event') }}">&larr; back to the event list</a>
+            <a class="link" href="{{ path('event_show', {'slug': entity.slug}) }}">show event</a>
         </header>
 
         <article>
@@ -39,8 +39,7 @@
                         {{ form_widget(edit_form.details) }}
                     </dd>
                 </dl>
-                <hr/>
-                <input type="submit" class="btn btn-primary pull-right" value="Register!" />
+
                 {# the closing </form> tag #}
                 {{ form_end(edit_form) }}
 
@@ -49,4 +48,3 @@
         </article>
     </section>
 {% endblock %}
-

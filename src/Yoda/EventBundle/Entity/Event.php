@@ -2,8 +2,11 @@
 
 namespace Yoda\EventBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Yoda\UserBundle\Entity\User;
 
 /**
  * Event
@@ -50,18 +53,79 @@ class Event
      */
     private $details;
     /**
-     * @ORM\ManyToOne(targetEntity="Yoda\UserBundle\Entity\User")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Yoda\UserBundle\Entity\User",
+     * inversedBy="event")
      */
     private $owner;
+    /**
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @ORM\Column(length=255, unique=true)
+     */
+    protected $slug;
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Yoda\UserBundle\Entity\User")
+     * @ORM\JoinTable(
+     *      joinColumns={@ORM\JoinColumn(onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(onDelete="CASCADE")}
+     * )
+     */
+    protected $attendees;
+
+    /**
+     * @return mixed
+     */
+    public function getAttendees()
+    {
+        return $this->attendees;
+    }
+
+    protected $createdAt;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $updatedAt;
+    public function __construct(){
+        $this->time=new \DateTime();
+        $this->attendees=new ArrayCollection();
+    }  /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
 
 
-
-
-
-   public function __construct(){
-       $this->time=new \DateTime();
-   }
     /**
      * Get id
      *
@@ -167,21 +231,12 @@ class Event
     {
         return $this->details;
     }
+    public function hasAttendee(User $user=null){
 
-    /**
-     * @return mixed
-     */
-    public function getOwner()
-    {
-        return $this->owner;
+        return $this->getAttendees()->contains($user);
     }
-
-    /**
-     * @param mixed $owner
-     */
-    public function setOwner($owner)
-    {
-        $this->owner = $owner;
+    public function __toString(){
+        return $this->getName();
     }
 }
 

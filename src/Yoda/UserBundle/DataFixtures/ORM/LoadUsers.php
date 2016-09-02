@@ -34,7 +34,13 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface,OrderedFixt
         $admin->setIsActive(true);
         $admin->setEmail('wayne@deathstar.com');
         $manager->persist($admin);
-
+        $admin1 = new User();
+        $admin1->setUsername('habib');
+        $admin1->setPassword($this->encodePassword($admin1, 'habib'));
+        $admin1->setRoles(array('ROLE_ADMIN'));
+        $admin1->setIsActive(true);
+        $admin1->setEmail('habib@deathstar.com');
+        $manager->persist($admin1);
         // the queries aren't done until now
         $manager->flush();
     }

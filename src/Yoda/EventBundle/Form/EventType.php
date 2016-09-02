@@ -31,4 +31,12 @@ class EventType extends AbstractType
             'data_class' => 'Yoda\EventBundle\Entity\Event'
         ));
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'yoda_eventbundle_event';
+    }
 }

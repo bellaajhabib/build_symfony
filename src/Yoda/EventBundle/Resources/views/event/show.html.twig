@@ -19,7 +19,9 @@
 
                 <dl>
                     <dt>where:</dt>
-                    <dd>{{ entity.location }}</dd>
+                    <dd>{{ entity.location }}
+                    </dd>  <dt>Hots:</dt>
+                    <dd>{{ entity.owner.username }}</dd>
 
                     <dt>when:</dt>
                     <dd>{{ entity.time | date('g:ia / l M j, Y') }}</dd>
@@ -27,14 +29,66 @@
                     <dt>what:</dt>
                     <dd>{{ entity.details }}</dd>
 
+
                     <dt>who:</dt>
                     <dd>
+                     <span class="who">   {{ entity.attendees|length }}  </span> attending!
+
                         <ul class="users">
-                            <li>nobody yet!</li>
+                            {% for attendee in entity.attendees %}
+                                <li>{{ attendee }}</li>
+                            {% else %}
+                                <li>nobody yet!</li>
+                            {% endfor %}
                         </ul>
+                    </dd>
+
+                    <dt>who:</dt>
+                    <dd>
+                        {# ... #}
+                        {% if entity.hasAttendee(app.user) %}
+                            <a href="{{ path('event_unattend', {'id': entity.id}) }}" class="btn btn-warning btn-xs js-attend-toggle">
+                                Oh no! I can't go anymore!
+                            </a>
+                        {% else %}
+                            <a href="{{ path('event_attend', {'id': entity.id}) }}" class="btn btn-success btn-xs js-attend-toggle">
+                                I totally want to go!
+                            </a>
+                        {% endif %}
                     </dd>
                 </dl>
             </section>
         </article>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function() {
+            $('.js-attend-toggle').on('click', function(e) {
+                // prevents the browser from "following" the link
+                e.preventDefault();
+
+                var $anchor = $(this);
+
+                var url = $(this).attr('href')+'.json';
+
+                $.post(url, null, function(data) {
+                    console.log(data);
+                    if (data.attending) {
+                        var message = 'See you there!';
+                    } else {
+                        var message = 'We\'ll miss you!';
+                    }
+
+                    $anchor.after('<span class="label label-default">&#10004; '+message+'</span>');
+                    $anchor.hide();
+                    $('.who').after( $httpParamSerializer(data.attending));
+                    $('.who').hide();
+                });
+            });
+        });
+    </script>
 {% endblock %}

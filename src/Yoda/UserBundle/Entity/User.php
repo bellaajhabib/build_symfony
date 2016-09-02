@@ -2,6 +2,7 @@
 
 namespace Yoda\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -85,7 +86,39 @@ class User implements  AdvancedUserInterface,Serializable
      * @ORM\Column(type="boolean")
      */
     private $isActive = true;
+    /**
+     * @ORM\OneToMany(targetEntity="Yoda\EventBundle\Entity\Event",mappedBy="owner")
+     */
+   protected $events;
 
+
+
+    public  function __construct(){
+        $this->events=new ArrayCollection();
+    }
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
     /**
      * @return boolean
      */
@@ -116,32 +149,21 @@ class User implements  AdvancedUserInterface,Serializable
     {
         $this->email = $email;
     }
-
-
     /**
-     * Get id
-     *
-     * @return int
+     * @return mixed
      */
-    public function getId()
+    public function getEvents()
     {
-        return $this->id;
+        return $this->events;
     }
 
     /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return User
+     * @param mixed $events
      */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
+//    public function setEvents(ArrayCollection $events)
+//    {
+//        $this->events = $events;
+//    }
     /**
      * Returns the roles granted to the user.
      *
@@ -331,6 +353,10 @@ class User implements  AdvancedUserInterface,Serializable
             $this->username,
             $this->password,
             ) = unserialize($serialized);
+    }
+    public function __toString()
+    {
+        return (string) $this->getUsername();
     }
 }
 
