@@ -1,4 +1,11 @@
 services:
-#    event.example:
-#        class: Yoda\EventBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    event_report_manager:
+        class: Yoda\EventBundle\Reporting\EventReportManager
+        arguments: ["@doctrine.orm.default_entity_manager","@validator.email","@router"]
+        calls:
+            - [setRequest, ["@request_stack"]]
+    yoda_event.twig.event_extension:
+        class: Yoda\EventBundle\Twig\EventExtension
+        arguments: []
+        tags:
+            - { name: twig.extension }

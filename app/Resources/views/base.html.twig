@@ -9,21 +9,27 @@
             {%- else -%}
                 Events from a Galaxy, far far away
             {%- endif -%}</title>
-        <link rel="stylesheet"
-              href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('bundles/event/css/event.css') }}">
-        <link rel="stylesheet" href="{{ asset('bundles/event/css/events.css') }}">
-        <link rel="stylesheet" href="{{ asset('bundles/event/css/main.css') }}">
         {#{% block stylesheets %}#}
-            {#{%stylesheets#}
-            {#'bundles/event/css/event.css'#}
-            {#'bundles/event/css/events.css'#}
-            {#'bundles/event/css/main.css'#}
-            {#filter='cssrewrite'#}
-            {#%}#}
-            {#<link rel="stylesheet" href="{{ asset_url }}" />#}
-            {#{% endstylesheets %}#}
+        {#<link rel="stylesheet"#}
+              {#href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">#}
+        {#<link rel="stylesheet" href="{{ asset('bundles/event/css/event.css') }}">#}
+        {#<link rel="stylesheet" href="{{ asset('bundles/event/css/events.css') }}">#}
+        {#<link rel="stylesheet" href="{{ asset('bundles/event/css/main.css') }}">#}
         {#{% endblock %}#}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+
+            {% stylesheets
+            'bundles/event/css/event.css'
+            'bundles/event/css/events.css'
+            'bundles/event/css/main.css'
+            filter='cssrewrite'
+            filter='uglifycss'
+            output='css/built/layout.css'
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>

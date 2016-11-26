@@ -1,0 +1,26 @@
+{
+  "name": "tuts",
+  "version": "1.0.0",
+  "description": "Symfony Standard Edition ========================",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "uglifycss": "0.0.21"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bellaajhabib/build_symfony.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bellaajhabib/build_symfony/issues"
+  },
+  "homepage": "https://github.com/bellaajhabib/build_symfony#readme"
+}

@@ -24,6 +24,8 @@ framework:
     #serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
+#        assets_version: 5-return-of-the-jedi
+#        assets_version_format: "%%s?v=%%s"
     default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
@@ -74,3 +76,11 @@ stof_doctrine_extensions:
         default:
             sluggable:   true
             timestampable: true
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+        uglifycss:
+            # the path to the uglifyjs executable
+            bin: /usr/local/bin/uglifyjs
